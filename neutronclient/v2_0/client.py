@@ -223,6 +223,16 @@ class Client(object):
     firewall_path = "/fw/firewalls/%s"
     net_partitions_path = "/net-partitions"
     net_partition_path = "/net-partitions/%s"
+    grouppolicy_classifiers_path = "/gp/classifiers"
+    grouppolicy_classifier_path = "/gp/classifiers/%s"
+    grouppolicy_connectivitygroups_path = "/gp/endpoint_groups"
+    grouppolicy_connectivitygroup_path = "/gp/endpoint_groups/%s"
+    grouppolicy_endpoints_path = "/gp/endpoints"
+    grouppolicy_endpoint_path = "/gp/endpoints/%s"
+    grouppolicy_policies_path = "/gp/policies"
+    grouppolicy_policies_path = "/gp/policies/%s"
+    grouppolicy_policy_rules_path = "/gp/policy_rules"
+    grouppolicy_policy_rules_path = "/gp/policy_rules/%s"
 
     # API has no way to report plurals, so we have to hard code them
     EXTED_PLURALS = {'routers': 'router',
@@ -1133,6 +1143,124 @@ class Client(object):
     def delete_net_partition(self, netpartition):
         """Delete the network partition."""
         return self.delete(self.net_partition_path % netpartition)
+
+    @APIParamsCall
+    def list_connectivity_groups(self, retrieve_all=True, **_params):
+        """Fetches a list of all connectivity groups for a tenant."""
+        return self.list('connectivity_groups',
+                         self.grouppolicy_connectivitygroups_path,
+                         retrieve_all, **_params)
+
+    @APIParamsCall
+    def show_connectivity_group(self, group, **_params):
+        """Fetches information of a certain connectivity group."""
+        return self.get(self.grouppolicy_connectivity_group_path % (group),
+                        params=_params)
+
+    @APIParamsCall
+    def create_connectivity_group(self, body=None):
+        """Creates a new connectivity group."""
+        return self.post(self.grouppolicy_connectivity_groups_path, body=body)
+
+    @APIParamsCall
+    def update_connectivity_group(self, group, body=None):
+        """Updates a connectivity group."""
+        return self.put(self.grouppolicy_connectivity_group_path % (group),
+                        body=body)
+
+    @APIParamsCall
+    def delete_connectivity_group(self, group, body=None):
+        """Deletes the specified connectivity group."""
+        return self.delete(self.grouppolicy_connectivity_group_path % (group),
+                           body=body)
+
+    @APIParamsCall
+    def list_endpoints(self, retrieve_all=True, **_params):
+        """Fetches a list of all endpoints for a tenant."""
+        return self.list('endpoints',
+                         self.grouppolicy_endpoints_path,
+                         retrieve_all, **_params)
+
+    @APIParamsCall
+    def show_endpoint(self, endpoint, **_params):
+        """Fetches information of a certain endpoint."""
+        return self.get(self.grouppolicy_endpoint_path % (endpoint),
+                        params=_params)
+
+    @APIParamsCall
+    def create_endpoint(self, body=None):
+        """Creates a new endpoint."""
+        return self.post(self.grouppolicy_endpoints_path, body=body)
+
+    @APIParamsCall
+    def update_endpoint(self, endpoint, body=None):
+        """Updates an endpoint."""
+        return self.put(self.grouppolicy_endpoint_path % (endpoint),
+                        body=body)
+
+    @APIParamsCall
+    def delete_endpoint(self, endpoint, body=None):
+        """Deletes the specified endpoint."""
+        return self.delete(self.grouppolicy_endpoint_path % (endpoint),
+                           body=body)
+
+    @APIParamsCall
+    def list_policies(self, retrieve_all=True, **_params):
+        """Fetches a list of all policies for a tenant."""
+        return self.list('policies',
+                         self.grouppolicy_policies_path,
+                         retrieve_all, **_params)
+
+    @APIParamsCall
+    def show_policy(self, policy, **_params):
+        """Fetches information of a certain policy."""
+        return self.get(self.grouppolicy_policy_path % (policy),
+                        params=_params)
+
+    @APIParamsCall
+    def create_policy(self, body=None):
+        """Creates a new policy."""
+        return self.post(self.grouppolicy_policies_path, body=body)
+
+    @APIParamsCall
+    def update_policy(self, policy, body=None):
+        """Updates a policy."""
+        return self.put(self.grouppolicy_policy_path % (policy), body=body)
+
+    @APIParamsCall
+    def delete_policy(self, policy, body=None):
+        """Deletes the specified policy."""
+        return self.delete(self.grouppolicy_policy_path % (policy), body=body)
+
+    @APIParamsCall
+    def list_policy_rules(self, retrieve_all=True, **_params):
+        """Fetches a list of all policy rules for a tenant."""
+        return self.list('policy_rules',
+                         self.grouppolicy_policies_path,
+                         retrieve_all, **_params)
+
+    @APIParamsCall
+    def show_policy_rule(self, policy_rule, **_params):
+        """Fetches information of a certain policy rule."""
+        return self.get(self.grouppolicy_policy_rule_path % (policy_rule),
+                        params=_params)
+
+    @APIParamsCall
+    def create_policy_rule(self, body=None):
+        """Creates a new policy rule."""
+        return self.post(self.grouppolicy_policy_rules_path, body=body)
+
+    @APIParamsCall
+    def update_policy_rule(self, policy_rule, body=None):
+        """Updates a policy rule."""
+        return self.put(self.grouppolicy_policy_rule_path % (policy_rule),
+                        body=body)
+
+    @APIParamsCall
+    def delete_policy_rule(self, policy_rule, body=None):
+        """Deletes the specified policy. rule"""
+        return self.delete(self.grouppolicy_policy_rule_path % (policy_rule),
+                           body=body)
 
     def __init__(self, **kwargs):
         """Initialize a new client for the Neutron v2.0 API."""

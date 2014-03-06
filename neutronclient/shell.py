@@ -39,6 +39,10 @@ from neutronclient.neutron.v2_0 import floatingip
 from neutronclient.neutron.v2_0.fw import firewall
 from neutronclient.neutron.v2_0.fw import firewallpolicy
 from neutronclient.neutron.v2_0.fw import firewallrule
+from neutronclient.neutron.v2_0.gp import connectivitygroup as gp_connectgroup
+from neutronclient.neutron.v2_0.gp import endpoint as gp_endpoint
+from neutronclient.neutron.v2_0.gp import policy as gp_policy
+from neutronclient.neutron.v2_0.gp import policyrule as gp_policyrule
 from neutronclient.neutron.v2_0.lb import healthmonitor as lb_healthmonitor
 from neutronclient.neutron.v2_0.lb import member as lb_member
 from neutronclient.neutron.v2_0.lb import pool as lb_pool
@@ -266,6 +270,26 @@ COMMAND_V2 = {
     'nuage-netpartition-show': netpartition.ShowNetPartition,
     'nuage-netpartition-create': netpartition.CreateNetPartition,
     'nuage-netpartition-delete': netpartition.DeleteNetPartition,
+    'endpoint-create': gp_endpoint.CreateEndpoint,
+    'endpoint-update': gp_endpoint.UpdateEndpoint,
+    'endpoint-delete': gp_endpoint.DeleteEndpoint,
+    'endpoint-list': gp_endpoint.ListEndpoint,
+    'endpoint-show': gp_endpoint.ShowEndpoint,
+    'connectivity-group-create': gp_connectgroup.CreateConnectivityGroup,
+    'connectivity-group-delete': gp_connectgroup.DeleteConnectivityGroup,
+    'connectivity-group-update': gp_connectgroup.UpdateConnectivityGroup,
+    'connectivity-group-list': gp_connectgroup.ListConnectivityGroup,
+    'connectivity-group-show': gp_connectgroup.ShowConnectivityGroup,
+    'policy-create': gp_policy.CreatePolicy,
+    'policy-delete': gp_policy.DeletePolicy,
+    'policy-update': gp_policy.UpdatePolicy,
+    'policy-list': gp_policy.ListPolicy,
+    'policy-show': gp_policy.ShowPolicy,
+    'policy-rule-create': gp_policyrule.CreatePolicyRule,
+    'policy-rule-delete': gp_policyrule.DeletePolicyRule,
+    'policy-rule-update': gp_policyrule.UpdatePolicyRule,
+    'policy-rule-list': gp_policyrule.ListPolicyRule,
+    'policy-rule-show': gp_policyrule.ShowPolicyRule,
 }
 
 COMMANDS = {'2.0': COMMAND_V2}
