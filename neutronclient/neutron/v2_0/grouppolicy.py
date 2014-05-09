@@ -17,6 +17,7 @@
 import logging
 import string
 
+from neutronclient.common import utils
 from neutronclient.neutron import v2_0 as neutronV20
 from neutronclient.openstack.common.gettextutils import _
 
@@ -165,11 +166,11 @@ class CreateEndpointGroup(neutronV20.CreateCommand,
             default='',
             help=_('Bridge domain uuid'))
         parser.add_argument(
-            '--provided_contract_scopes', type=string.split,
+            '--provided-contracts', type=utils.str2dict,
             default={},
             help=_('Dictionary of provided contract scopes'))
         parser.add_argument(
-            '--consumed_contract_scopes', type=string.split,
+            '--consumed-contracts', type=utils.str2dict,
             default={},
             help=_('Dictionary of consumed contract scopes'))
 
@@ -178,17 +179,12 @@ class CreateEndpointGroup(neutronV20.CreateCommand,
     def args2body(self, parsed_args):
         body = {self.resource: {}, }
 
-        attr_map = {'endpoints': 'endpoint',
-                    'provided_contract_scopes': 'contract_scope',
-                    'consumed_contract_scopes': 'contract_scope'}
-        for attr_name, res_name in attr_map.items():
-            if getattr(parsed_args, attr_name):
-                _uuids = [
+        if parsed_args.endpoints:
+            body[self.resource]['endpoint'] = [
                     neutronV20.find_resourceid_by_name_or_id(
                         self.get_client(),
-                        res_name,
-                        elem) for elem in getattr(parsed_args, attr_name)]
-                body[self.resource][attr_name] = _uuids
+                        'endpoint',
+                        elem) for elem in parsed_args.endpoints]
 
         if parsed_args.bridge_domain:
             body[self.resource]['bridge_domain_id'] = \
@@ -198,7 +194,8 @@ class CreateEndpointGroup(neutronV20.CreateCommand,
 
         neutronV20.update_dict(parsed_args, body[self.resource],
                                ['name', 'tenant_id', 'description',
-                                'parent_id'])
+                                'parent_id', 'provided_contracts',
+                                'consumed_contracts'])
 
         self.args2body_subnet(parsed_args, body[self.resource])
 
