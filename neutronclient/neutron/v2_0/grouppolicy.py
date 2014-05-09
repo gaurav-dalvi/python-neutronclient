@@ -318,7 +318,7 @@ class CreatePolicyRule(neutronV20.CreateCommand):
             '--enabled', type=bool,
             help=_('Enable flag'))
         parser.add_argument(
-            '--classifier-id',
+            '--classifier',
             help=_('uuid of policy classifier'))
         parser.add_argument(
             '--actions', type=string.split,
@@ -332,15 +332,22 @@ class CreatePolicyRule(neutronV20.CreateCommand):
         body = {self.resource: {}, }
 
         if parsed_args.actions:
-            body[self.resource]['actions'] = [
+            body[self.resource]['policy_actions'] = [
                 neutronV20.find_resourceid_by_name_or_id(
                     self.get_client(),
-                    'action',
+                    'policy_action',
                     elem) for elem in parsed_args.actions]
 
+        if parsed_args.classifier:
+            body[self.resource]['policy_classifier_id'] = [
+                neutronV20.find_resourceid_by_name_or_id(
+                    self.get_client(),
+                    'policy_classifier',
+                    elem) for elem in parsed_args.actions]
+            
         neutronV20.update_dict(parsed_args, body[self.resource],
                                ['name', 'tenant_id', 'description',
-                                'enabled', 'classifier_id'])
+                                'enabled'])
 
         return body
 
