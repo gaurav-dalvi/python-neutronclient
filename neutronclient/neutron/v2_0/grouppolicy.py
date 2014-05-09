@@ -339,7 +339,7 @@ class CreatePolicyRule(neutronV20.CreateCommand):
                     elem) for elem in parsed_args.actions]
 
         if parsed_args.classifier:
-            body[self.resource]['policy_classifier_id'] =
+            body[self.resource]['policy_classifier_id'] = \
                 neutronV20.find_resourceid_by_name_or_id(
                     self.get_client(),
                     'policy_classifier',
