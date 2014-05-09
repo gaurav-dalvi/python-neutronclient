@@ -339,11 +339,11 @@ class CreatePolicyRule(neutronV20.CreateCommand):
                     elem) for elem in parsed_args.actions]
 
         if parsed_args.classifier:
-            body[self.resource]['policy_classifier_id'] = [
+            body[self.resource]['policy_classifier_id'] =
                 neutronV20.find_resourceid_by_name_or_id(
                     self.get_client(),
                     'policy_classifier',
-                    elem) for elem in parsed_args.actions]
+                    parsed_args.classifier)
             
         neutronV20.update_dict(parsed_args, body[self.resource],
                                ['name', 'tenant_id', 'description',
@@ -404,7 +404,7 @@ class CreatePolicyClassifier(neutronV20.CreateCommand):
             help=_('Port range'))
         parser.add_argument(
             '--direction',
-            choices=['in', 'out', 'bi'],
+            choices=['in', 'out', 'bi', ''],
             help=_('Direction'))
         parser.add_argument(
             'name', metavar='NAME',
