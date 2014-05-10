@@ -249,6 +249,10 @@ class CreateContract(neutronV20.CreateCommand):
             #default=[],
             help=_('List of policy rules'))
         parser.add_argument(
+            '--child-contracts', type=string.split,
+            #default=[],
+            help=_('List of child contracts'))
+        parser.add_argument(
             'name', metavar='NAME',
             help=_('Name of contract to create'))
 
@@ -261,6 +265,13 @@ class CreateContract(neutronV20.CreateCommand):
                     self.get_client(),
                     'policy_rule',
                     elem) for elem in parsed_args.policy_rules]
+
+        if parsed_args.child_contracts:
+            body[self.resource]['child_contracts'] = [
+                neutronV20.find_resourceid_by_name_or_id(
+                    self.get_client(),
+                    'contract',
+                    elem) for elem in parsed_args.child_contracts]
 
         neutronV20.update_dict(parsed_args, body[self.resource],
                                ['name', 'tenant_id', 'description'])
