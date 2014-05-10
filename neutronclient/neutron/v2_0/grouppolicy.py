@@ -192,6 +192,22 @@ class CreateEndpointGroup(neutronV20.CreateCommand,
                     self.get_client(), 'bridge_domain',
                     parsed_args.bridge_domain)
 
+        if parsed_args.provided_contracts:
+            for key in parsed_args.provided_contracts.keys():
+                id_key = neutronV20.find_resourceid_by_name_or_id(
+                    self.get_client(), 'contract',
+                    key)
+                parsed_args.provided_contracts[id_key] = \
+                    parsed_args.provided_contracts.pop(key)
+        
+        if parsed_args.consumed_contracts:
+            for key in parsed_args.consumed_contracts.keys():
+                id_key = neutronV20.find_resourceid_by_name_or_id(
+                    self.get_client(), 'contract',
+                    key)
+                parsed_args.consumed_contracts[id_key] = \
+                    parsed_args.consumed_contracts.pop(key)
+
         neutronV20.update_dict(parsed_args, body[self.resource],
                                ['name', 'tenant_id', 'description',
                                 'parent_id', 'provided_contracts',
