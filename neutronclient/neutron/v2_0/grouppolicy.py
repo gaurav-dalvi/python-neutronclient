@@ -308,6 +308,24 @@ class UpdateContract(neutronV20.UpdateCommand):
     resource = 'contract'
     log = logging.getLogger(__name__ + '.UpdateContract')
 
+    def add_known_arguments(self, parser):
+        parser.add_argument(
+            '--policy-rules', type=string.split,
+            #default=[],
+            help=_('List of policy rules'))
+
+    def args2body(self, parsed_args):
+        body = {self.resource: {}, }
+
+        if parsed_args.policy_rules:
+            body[self.resource]['policy_rules'] = [
+                neutronV20.find_resourceid_by_name_or_id(
+                    self.get_client(),
+                    'policy_rule',
+                    elem) for elem in parsed_args.policy_rules]
+        
+        return body
+
 
 class ListPolicyRule(neutronV20.ListCommand):
     """List policy_rules that belong to a given tenant."""
